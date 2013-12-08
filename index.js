@@ -12,7 +12,9 @@ var LEVEL_KEY = 'lvl';
 var MESSAGE_KEY = 'mssg';
 var HOST_KEY = 'hst';
 
-var Splnkstrm = winston.transports.SplunkStorm = function (options) {
+var Splnkstrm = function (options) {
+    winston.Transport.call(this);
+
     options = options || {};
 
     var apiKey = options.apiKey;
@@ -30,20 +32,16 @@ var Splnkstrm = winston.transports.SplunkStorm = function (options) {
     this._options = options;
 };
 
+Splnkstrm.prototype.name = 'Splnkstrm';
+
 util.inherits(Splnkstrm, winston.Transport);
+
+winston.transports.Splnkstrm = Splnkstrm;
 
 Splnkstrm.prototype.log = function (level, message, pairs, callback) {
     var result = this._buildKeyValuePairs(level, message, pairs);
 
-    this._storm.send(result, this._sourceType, this._host, this._source, function(error, response, body) {
-        console.log( body );
-    });
-};
-
-Splnkstrm.prototype.logException = function (msg, meta, callback) {
-//    this.storm.send("Exception " + msg, this.options.sourcetype, this.options.host, this.options.source, function (err) {
-//        callback(err, !err)
-//    });
+    this._storm.send(result, this._sourceType, this._host, this._source, callback);
 };
 
 Splnkstrm.prototype._buildKeyValuePairs = function(level, message, pairs) {
