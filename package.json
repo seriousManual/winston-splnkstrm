@@ -22,7 +22,9 @@
     "url": "https://github.com/zaphod1984/winston-splnkstrm/issues"
   },
   "dependencies": {
-    "splunkstorm": "~0.1.0"
+    "splunkstorm": "~0.1.0",
+    "chai": "~1.8.1",
+    "mocha": "~1.15.1"
   },
   "peerDependencies": {
     "winston": "~0.7.2"

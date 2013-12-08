@@ -7,7 +7,6 @@ var PATTERN_WHITESPACE_REPLACE = /[\r\n]/g;
 var PATTERN_WHITESPACE_DETECT = /\s/;
 var PATTERN_QUOTE = /"/g;
 
-var STD_LEVEL = 'info';
 var LEVEL_KEY = 'lvl';
 var MESSAGE_KEY = 'mssg';
 var HOST_KEY = 'hst';
