@@ -54,9 +54,11 @@ winston.transports.Splnkstrm = Splnkstrm;
  * @param callback function will be called when logging is done
  */
 Splnkstrm.prototype.log = function (level, message, meta, callback) {
-    var result = this._buildKeyValuePairs(level, message, meta);
+    var kvString = this._buildKeyValuePairs(level, message, meta);
 
-    this._storm.send(result, this._sourceType, this._host, this._source, callback);
+    var logMessage = util.format("%s %s", (new Date()).toISOString(), kvString);
+
+    this._storm.send(logMessage, this._sourceType, this._host, this._source, callback);
 };
 
 /**

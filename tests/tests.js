@@ -63,6 +63,8 @@ describe('Splnkstrm', function() {
     });
 
     it('should call log with the correct parameters', function() {
+        var clock = sinon.useFakeTimers();
+
         var Splunkstorm = function() {};
         Splunkstorm.prototype.send = sinon.spy();
 
@@ -85,8 +87,10 @@ describe('Splnkstrm', function() {
         a.log('info', 'foo', {a: 'a'}, 'callback');
 
         expect(Splunkstorm.prototype.send.args).to.deep.equal([
-            ['a=a, mssg=foo, lvl=info, hst=host', 'sourceType', 'host', 'source', 'callback']
+            ['1970-01-01T00:00:00.000Z a=a, mssg=foo, lvl=info, hst=host', 'sourceType', 'host', 'source', 'callback']
         ]);
+
+        clock.restore();
     });
 
 });
