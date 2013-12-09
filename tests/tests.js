@@ -2,28 +2,24 @@ var expect = require('chai').expect;
 var sandboxed = require('sandboxed-module');
 var sinon = require('sinon');
 
-var splnkstrm = require('../');
+var Splnkstrm = require('../');
 
 function getSplunkstormMock() {
-    var Log = sinon.spy(function(apiKey, projectId) {});
-
-    Log.prototype.send = sinon.spy(function() {});
-
     return {
-        Log: Log
+        Log: sinon.spy(function(apiKey, projectId) {})
     };
 }
 
-describe('splnkstrm', function() {
+describe('Splnkstrm', function() {
     it('should throw if no apiKey is set', function() {
         expect(function() {
-            new splnkstrm({projectId: 'foo'});
+            new Splnkstrm({projectId: 'foo'});
         }).to.throw();
     });
 
     it('should throw if no projectId is set', function() {
         expect(function() {
-            new splnkstrm({apiKey: 'foo'});
+            new Splnkstrm({apiKey: 'foo'});
         }).to.throw();
     });
 
@@ -44,7 +40,7 @@ describe('splnkstrm', function() {
 
     describe('key value paris', function() {
         it('should incorporate level and message into kvstring', function() {
-            var s = new splnkstrm({apiKey: 'foo', projectId: 'foo1'});
+            var s = new Splnkstrm({apiKey: 'foo', projectId: 'foo1'});
 
             var pairString = s._buildKeyValuePairs('info', 'foo');
 
@@ -52,18 +48,44 @@ describe('splnkstrm', function() {
         });
 
         it('should incorporate level and message into kvstring', function() {
-            var s = new splnkstrm({apiKey: 'foo', projectId: 'foo1'});
+            var s = new Splnkstrm({apiKey: 'foo', projectId: 'foo1'});
 
             var pairString = s._buildKeyValuePairs('info', null, {
                 a: 'a',
                 b: 'b b',
-                c: '"a"',
+                c: 'c "foo" c',
                 d: 'd\nd',
                 e: ''
             });
 
-            expect(pairString).to.match(/a=a, b="b b", c='a', d=dd, e="", lvl=info, hst=.+/);
+            expect(pairString).to.match(/a=a, b="b b", c="c 'foo' c", d=dd, e="", lvl=info, hst=.+/);
         });
+    });
+
+    it('should call log with the correct parameters', function() {
+        var Splunkstorm = function() {};
+        Splunkstorm.prototype.send = sinon.spy();
+
+        var Splnkstrm = sandboxed.require('../index', {
+            requires: {
+                splunkstorm: {
+                    Log: Splunkstorm
+                }
+            }
+        });
+
+        var a = new Splnkstrm({
+            projectId: 'projectId',
+            apiKey: 'apiKey',
+            source: 'source',
+            host: 'host'
+        });
+
+        a.log('info', 'foo', {a: 'a'}, 'callback');
+
+        expect(Splunkstorm.prototype.send.args).to.deep.equal([
+            ['a=a, mssg=foo, lvl=info, hst=host', 'syslog', 'host', 'source', 'callback']
+        ]);
     });
 
 });
