@@ -6,8 +6,8 @@
 
 [![NPM](https://nodei.co/npm-dl/winston-splnkstrm.png?months=3)](https://nodei.co/npm/winston-splnkstrm/)
 
-In their [Logging Best Practises](http://dev.splunk.com/view/logging-best-practices/SP-CAAADP6) Splunk  strongly encourages the usage of key-value pairs in logs.
-This winston plugin takes messages and meta data hashes and creates a key-value structured string out of it.
+In their [Logging Best Practises](http://dev.splunk.com/view/logging-best-practices/SP-CAAADP6) Splunk strongly encourages the usage of key-value pairs in logs.
+This [winston](https://github.com/flatiron/winston) plugin takes messages and meta data hashes and creates a key-value structured string out of it.
 
 ## Installation
 
