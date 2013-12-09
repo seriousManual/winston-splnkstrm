@@ -78,13 +78,14 @@ describe('Splnkstrm', function() {
             projectId: 'projectId',
             apiKey: 'apiKey',
             source: 'source',
-            host: 'host'
+            host: 'host',
+            sourceType: 'sourceType'
         });
 
         a.log('info', 'foo', {a: 'a'}, 'callback');
 
         expect(Splunkstorm.prototype.send.args).to.deep.equal([
-            ['a=a, mssg=foo, lvl=info, hst=host', 'syslog', 'host', 'source', 'callback']
+            ['a=a, mssg=foo, lvl=info, hst=host', 'sourceType', 'host', 'source', 'callback']
         ]);
     });
 
