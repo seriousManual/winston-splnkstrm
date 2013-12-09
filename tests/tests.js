@@ -5,10 +5,12 @@ var sinon = require('sinon');
 var splnkstrm = require('../');
 
 function getSplunkstormMock() {
-    return {
-        Log: sinon.spy(function(apiKey, projectId) {
+    var Log = sinon.spy(function(apiKey, projectId) {});
 
-        })
+    Log.prototype.send = sinon.spy(function() {});
+
+    return {
+        Log: Log
     };
 }
 
@@ -29,9 +31,7 @@ describe('splnkstrm', function() {
         var s = getSplunkstormMock();
 
         var Splnkstrm = sandboxed.require('../index', {
-            requires: {
-                splunkstorm: s
-            }
+            requires: { splunkstorm: s }
         });
 
         var a = new Splnkstrm({
@@ -40,6 +40,30 @@ describe('splnkstrm', function() {
         });
 
         expect(s.Log.args).to.deep.equal([['apiKey', 'projectId']]);
-    })
+    });
+
+    describe('key value paris', function() {
+        it('should incorporate level and message into kvstring', function() {
+            var s = new splnkstrm({apiKey: 'foo', projectId: 'foo1'});
+
+            var pairString = s._buildKeyValuePairs('info', 'foo');
+
+            expect(pairString).to.match(/mssg=foo, lvl=info, hst=.+/);
+        });
+
+        it('should incorporate level and message into kvstring', function() {
+            var s = new splnkstrm({apiKey: 'foo', projectId: 'foo1'});
+
+            var pairString = s._buildKeyValuePairs('info', null, {
+                a: 'a',
+                b: 'b b',
+                c: '"a"',
+                d: 'd\nd',
+                e: ''
+            });
+
+            expect(pairString).to.match(/a=a, b="b b", c='a', d=dd, e="", lvl=info, hst=.+/);
+        });
+    });
 
 });
