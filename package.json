@@ -28,5 +28,9 @@
   },
   "peerDependencies": {
     "winston": "~0.7.2"
+  },
+  "devDependencies": {
+    "sandboxed-module": "~0.3.0",
+    "sinon": "~1.7.3"
   }
 }
