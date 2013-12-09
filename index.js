@@ -11,6 +11,11 @@ var LEVEL_KEY = 'lvl';
 var MESSAGE_KEY = 'mssg';
 var HOST_KEY = 'hst';
 
+/**
+ * Constructor function for the Splunkstorm constructor
+ * @param options
+ * @constructor
+ */
 var Splnkstrm = function (options) {
     winston.Transport.call(this);
 
@@ -31,18 +36,37 @@ var Splnkstrm = function (options) {
     this._options = options;
 };
 
-Splnkstrm.prototype.name = 'Splnkstrm';
-
+//inheritance
 util.inherits(Splnkstrm, winston.Transport);
 
+//Expose the name of the transport on the prototype
+Splnkstrm.prototype.name = 'Splnkstrm';
+
+// Define a getter so that `winston.transports.Splnkstrm`
+// is available and thus backwards compatible.
 winston.transports.Splnkstrm = Splnkstrm;
 
-Splnkstrm.prototype.log = function (level, message, pairs, callback) {
-    var result = this._buildKeyValuePairs(level, message, pairs);
+/**
+ * core logging method for winston
+ * @param level string implies the importance of the log message
+ * @param message string the message that should be logged
+ * @param meta object a hash that holds additional diagnostics
+ * @param callback function will be called when logging is done
+ */
+Splnkstrm.prototype.log = function (level, message, meta, callback) {
+    var result = this._buildKeyValuePairs(level, message, meta);
 
     this._storm.send(result, this._sourceType, this._host, this._source, callback);
 };
 
+/**
+ * creates a string from key value pairs
+ * @param level string implies the importance of the log message
+ * @param message string the message that should be logged
+ * @param pairs object a key value pair hash
+ * @returns String
+ * @private
+ */
 Splnkstrm.prototype._buildKeyValuePairs = function(level, message, pairs) {
     var parameters = pairs || {};
 
