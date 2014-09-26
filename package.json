@@ -25,13 +25,13 @@
     "splunkstorm": "~0.1.0"
   },
   "peerDependencies": {
-    "winston": "~0.7.2"
+    "winston": ">=0.7"
   },
   "devDependencies": {
     "sandboxed-module": "~0.3.0",
     "sinon": "~1.7.3",
     "chai": "~1.8.1",
     "mocha": "~1.15.1",
-    "winston": "~0.7.2"
+    "winston": ">=0.7"
   }
 }
