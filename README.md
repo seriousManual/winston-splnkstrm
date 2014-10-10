@@ -37,3 +37,7 @@ winston.info({a: 'b'});
 * `apiHostName` the hostname assigned to your project by splunkStorm
 
 Find more Details [here](https://github.com/zaphod1984/splunk-storm).
+
+Built with [splunk-storm](https://www.npmjs.org/package/splunk-storm) the client for the splunkstorm api.
+
+Happy Logging!
