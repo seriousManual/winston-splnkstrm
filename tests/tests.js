@@ -75,7 +75,10 @@ describe('Splnkstrm', function() {
         var loggerInstance = new Splnkstrm({
             projectId: 'projectId',
             apiKey: 'apiKey',
-            apiHostName: 'apiHostName'
+            apiHostName: 'apiHostName',
+            sourceType: 'fooSourceType',
+            source: 'fooSource',
+            host: 'fooHostName'
         });
 
         loggerInstance._storm = {
@@ -83,7 +86,7 @@ describe('Splnkstrm', function() {
         };
 
         loggerInstance.log('info', 'foo', {a: 'a'}, 'callback');
-        expect(loggerInstance._storm.send).to.be.calledWith('1970-01-01T00:00:00.000Z a=a, mssg=foo, lvl=info, hst=Bert', 'syslog', 'Bert', '', 'callback');
+        expect(loggerInstance._storm.send).to.be.calledWith('1970-01-01T00:00:00.000Z a=a, mssg=foo, lvl=info, hst=fooHostName', 'fooSourceType', 'fooHostName', 'fooSource', 'callback');
 
         clock.restore();
     });
