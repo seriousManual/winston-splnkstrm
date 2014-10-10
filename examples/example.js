@@ -3,7 +3,8 @@ var SplunkStorm = require('../');
 
 winston.add(SplunkStorm, {
     apiKey: 'api-key',
-    projectId: 'projectId'
+    projectId: 'project-id',
+    apiHostName: 'api-host-name'
 });
 
 winston.info({a: 'b'});

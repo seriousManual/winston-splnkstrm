@@ -14,24 +14,28 @@
     "splunk",
     "splunkstorm",
     "winston",
-    "transport"
+    "transport",
+    "logging",
+    "logs",
+    "log aggregation"
   ],
-  "author": " <zaphod84@gmx.de>",
+  "author": "Manuel Ernst <zaphod84@gmx.de>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zaphod1984/winston-splnkstrm/issues"
   },
   "dependencies": {
-    "splunkstorm": "~0.1.0"
+    "splunk-storm": "^1.0.0"
   },
   "peerDependencies": {
     "winston": ">=0.7"
   },
   "devDependencies": {
-    "sandboxed-module": "~0.3.0",
-    "sinon": "~1.7.3",
-    "chai": "~1.8.1",
-    "mocha": "~1.15.1",
-    "winston": ">=0.7"
+    "chai": "^1.9.2",
+    "mocha": "^1.21.4",
+    "sandboxed-module": "^1.0.2",
+    "sinon": "^1.10.3",
+    "sinon-chai": "^2.6.0",
+    "winston": "^0.8.1"
   }
 }

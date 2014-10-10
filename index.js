@@ -1,7 +1,7 @@
 var os = require("os");
 var util = require("util");
 var winston = require("winston");
-var splunkstorm = require("splunkstorm");
+var SplunkStorm = require("splunk-storm");
 
 var PATTERN_WHITESPACE_REPLACE = /[\r\n]/g;
 var PATTERN_WHITESPACE_DETECT = /\s/;
@@ -23,12 +23,17 @@ var Splnkstrm = function (options) {
 
     var apiKey = options.apiKey;
     var projectId = options.projectId;
+    var apiHostName = options.apiHostName;
 
-    if(!apiKey || !projectId) {
-        throw new Error('apiKey and/or projectId not set');
+    if(!apiKey || !projectId || !apiHostName) {
+        throw new Error('apiKey, projectId and apiHostName are neccessary');
     }
 
-    this._storm = new splunkstorm.Log(apiKey, projectId);
+    this._storm = new SplunkStorm({
+        apiKey: apiKey,
+        projectId: projectId,
+        apiHostName: apiHostName
+    });
     this._sourceType = options.sourceType || 'syslog';
     this._source = options.source || '';
     this._host = options.host || os.hostname();
@@ -55,7 +60,6 @@ winston.transports.Splnkstrm = Splnkstrm;
  */
 Splnkstrm.prototype.log = function (level, message, meta, callback) {
     var kvString = this._buildKeyValuePairs(level, message, meta);
-
     var logMessage = util.format("%s %s", (new Date()).toISOString(), kvString);
 
     this._storm.send(logMessage, this._sourceType, this._host, this._source, callback);

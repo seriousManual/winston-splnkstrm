@@ -21,7 +21,8 @@ var Splnkstrm = require('winston-splnkstrm');
 
 winston.add(Splnkstrm, {
     apiKey: 'api-key',
-    projectId: 'projectId'
+    projectId: 'project-id',
+    apiHostName: 'api-host-name'
 });
 
 winston.info({a: 'b'});
@@ -33,7 +34,6 @@ winston.info({a: 'b'});
 
 * `apiKey` your apiKey at splunkstorm.com (mandatory)
 * `projectId` your projectId at splunkstorm.com (mandatory)
-* `sourceType` an arbitrary sourceType, defaults to 'syslog'
-* `source` your source, defaults to ''
-* `host` a host that should be used. defaults to `os.hostname()`
+* `apiHostName` the hostname assigned to your project by splunkStorm
 
+Find more Details [here](https://github.com/zaphod1984/splunk-storm).
