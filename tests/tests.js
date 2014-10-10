@@ -1,20 +1,7 @@
 var expect = require('chai').use(require('sinon-chai')).expect;
-var sandboxed = require('sandboxed-module');
 var sinon = require('sinon');
 
 var Splnkstrm = require('../');
-
-function getSplunkstormMock() {
-    function SplunkStorm(options) {
-        this._options = options;
-    }
-
-    SplunkStorm.prototype.send = sinon.spy(function(logMessage, sourceType, host, source, callback) {
-        callback(null);
-    });
-
-    return SplunkStorm;
-}
 
 describe('Splnkstrm', function() {
     it('should throw if no apiKey is set', function() {
@@ -42,12 +29,6 @@ describe('Splnkstrm', function() {
     });
 
     it('should create instance', function() {
-        var s = getSplunkstormMock();
-
-        sandboxed.require('../index', {
-            requires: { splunkstorm: s }
-        });
-
         var a = new Splnkstrm({
             projectId: 'projectId',
             apiKey: 'apiKey',
